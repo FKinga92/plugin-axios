@@ -203,7 +203,7 @@ User.$get({
   params: {
     id: 1
   }
-}); 
+});
 
 /**
  * @uri `/users`
@@ -258,6 +258,7 @@ import { Model } from '@vuex-orm/core'
 
 export default class Post extends Model {
   static entity = 'posts'
+  static primaryKey = 'id'
 
   static fields () {
     return {

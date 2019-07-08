@@ -88,7 +88,7 @@ export const AxiosRequestConfig = {
    * @param {object} response
    */
   onResponse(response) {
-    return response.data;
+    return response;
   },
 
   /**
@@ -224,12 +224,14 @@ export const FetchConfig = {
   },
 };
 
-export const GetConfig = {
-  name: 'get',
-  http: {
-    url: '/:id',
-    method: 'get',
-  },
+export const GetConfig = function(primaryKey){
+  return {
+    name: 'get',
+    http: {
+      url: `/:${primaryKey}`,
+      method: 'get',
+    }
+  }
 };
 
 export const CreateConfig = {
@@ -241,29 +243,35 @@ export const CreateConfig = {
   },
 };
 
-export const UpdateConfig = {
-  name: 'update',
-  http: {
-    url: '/:id',
-    method: 'put',
-  },
+export const UpdateConfig = function(primaryKey) {
+  return {
+    name: 'update',
+    http: {
+      url: `/:${primaryKey}`,
+      method: 'put',
+    }
+  }
 };
 
-export const DeleteConfig = {
-  name: 'delete',
-  http: {
-    url: '/:id',
-    method: 'delete',
-  },
+export const DeleteConfig = function(primaryKey) {
+  return {
+    name: 'delete',
+    http: {
+      url: `/:${primaryKey}`,
+      method: 'delete',
+    }
+  }
 };
 
-export const ModelConfig = {
-  http: AxiosRequestConfig,
-  methods: {
-    $fetch: FetchConfig,
-    $get: GetConfig,
-    $create: CreateConfig,
-    $update: UpdateConfig,
-    $delete: DeleteConfig,
-  },
+export const ModelConfig = function(http = AxiosRequestConfig, primaryKey = 'id') {
+  return {
+    http: http,
+    methods: {
+      $fetch: FetchConfig,
+      $get: GetConfig(primaryKey),
+      $create: CreateConfig,
+      $update: UpdateConfig(primaryKey),
+      $delete: DeleteConfig(primaryKey),
+    }
+  }
 };
