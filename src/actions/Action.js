@@ -22,7 +22,6 @@ export default class Action {
     const context = Context.getInstance();
     // ModelConfig.http = merge({}, ModelConfig.http, context.options.http);
     const http = merge({}, ModelConfig().http, context.options.http);
-    console.log(model.primaryKey)
     model.methodConf = merge({}, ModelConfig(http, model.primaryKey), model.methodConf);
     model.methodConf.http.url = (model.methodConf.http.url === '/') ? `/${model.entity}` : model.methodConf.http.url;
 

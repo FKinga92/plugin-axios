@@ -21,9 +21,11 @@ export default class Create extends Action {
     const request = axios[method](endpoint, params.data);
 
     this.onRequest(commit);
-    request
-      .then(response => this.onSuccess(commit, model, response))
-      .catch(error => this.onError(commit, error))
+    try {
+      this.onSuccess(commit, model, await request);
+    } catch(error) {
+      this.onError(commit, error);
+    }
 
     return request;
   }
@@ -43,8 +45,8 @@ export default class Create extends Action {
    * @param {object} data
    */
   static onSuccess(commit, model, { data }) {
-    commit('onSuccess')
-    model.insertOrUpdate({
+    commit('onSuccess');
+    return model.insertOrUpdate({
       data,
     });
   }
@@ -55,6 +57,6 @@ export default class Create extends Action {
    * @param {object} error
    */
   static onError(commit, error) {
-    commit('onError', error)
+    commit('onError', error);
   }
 }
